@@ -14,7 +14,6 @@ def get_titles(date):
         uris = []
         for title in titles:
             result = sp.search(q=f"track:{title} year:{date.split('-')[0]}", type="track")
-            print(result)
             try:
                 uri = result["tracks"]["items"][0]["uri"]
                 uris.append(uri)
