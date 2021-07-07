@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+{% import "bootstrap/wtf.html" as wtf %}
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Creating Spotify Playlists</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                <a href="{{ url_for('index') }}">Create Spotify Playlists From Popular Songs</a>
+            </h1>
+            <a href="{{ url_for('login') }}">Login</a>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-offset-4 is-4">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                <br>
+                <form method="POST">
+                    <input class="input" name="name" placeholder="Name" type="text">
+                    <br>
+                    <br>
+                    <input class="input" name="email" placeholder="Email" type="text">
+                    <br>
+                    <br>
+                    <input class="input" name="password" placeholder="Password" type="text">
+                    <br>
+                    <br>
+                    <button class="button is-info">
+                        Register
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+</footer>
+</body>
+
+</html>

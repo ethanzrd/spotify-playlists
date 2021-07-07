@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <title>Creating Spotify Playlists</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.6.2/css/bulma.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+</head>
+
+<body>
+<section class="hero is-primary">
+    <div class="hero-body">
+        <div class="container">
+            <h1 class="title">
+                <a href="{{ url_for('index') }}">Create Spotify Playlists From Popular Songs</a>
+            </h1>
+            {% if not current_user.is_authenticated %}
+            <a href="{{ url_for('login') }}">Login</a>
+            <a style="margin-left: 20px;" href="{{ url_for('register') }}">Register</a>
+            {% else %}
+            <span style="margin-top: 20px;">Logged in as: {{ current_user.name }}</span>
+            <br>
+            <br>
+            <a href="{{ url_for('logout') }}">Log out</a>
+            {% endif %}
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-offset-4 is-4">
+                {% with messages = get_flashed_messages() %}
+                {% if messages %}
+                <ul class=flashes>
+                    {% for message in messages %}
+                    <li>{{ message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                {% endwith %}
+                <br>
+                <form method="POST">
+                    <div class="field has-addons">
+                        <div class="control is-expanded">
+                            <input class="input" name="date" placeholder="Songs from date: YYYY/MM/DD" type="date">
+                        </div>
+                        <div class="control">
+                            <button class="button is-info">
+                                Create Playlist
+                            </button>
+                        </div>
+                    </div>
+                </form>
+                {% if not current_user.is_authenticated %}
+                <p style="margin-top: 20px;">Log in to save your playlists!</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section">
+    <div class="container">
+        <div class="columns">
+            <div class="column is-offset-4 is-4">
+                {% for playlist in playlists %}
+                <div class="box">
+                    <article class="media">
+                        <div class="media-content">
+                            <div class="content">
+                                <p>
+                                    <span class="title">{{ playlist.date }}</span>
+                                    <br>
+                                    <br>
+                                    <span class="subtitle">The most popular songs of {{ playlist.date }}</span>
+                                    <br>
+                                    <br>
+                                    <a href="{{ playlist.link }}">To your playlist</a>
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
+<footer class="footer">
+</footer>
+</body>
+
+</html>
