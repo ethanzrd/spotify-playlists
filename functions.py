@@ -1,4 +1,5 @@
 import requests
+import lxml
 from bs4 import BeautifulSoup
 from flask import flash, url_for, session, abort
 from werkzeug.utils import redirect
