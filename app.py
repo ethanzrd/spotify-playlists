@@ -4,6 +4,8 @@ from flask_login import current_user, login_required, logout_user
 from extensions import db, login_manager, bootstrap
 from functions import validate_login, register_user, get_titles, create_playlist, add_playlist
 from wrappers import logout_required
+from models import Playlist
+from utils import generate_date
 
 
 def create_app(config_file='app_config.py'):
@@ -35,6 +37,17 @@ def index():
     if request.method == 'POST':
         given_date = request.form['date']
         if given_date:
+            if current_user.is_authenticated:
+                existing_playlist = Playlist.query.filter_by(user=current_user, original_date=given_date).first()
+                if existing_playlist:
+                    flash("This date already exists.")
+                    return redirect(url_for('index'))
+            else:
+                playlists = list(session.get('playlists', {}).values())
+                for playlist in playlists:
+                    if playlist.original_date == given_date:
+                        flash("This date already exists.")
+                        return redirect(url_for('index'))
             uris = get_titles(given_date)
             if not uris:
                 flash("Could not find any songs.")
@@ -42,7 +55,8 @@ def index():
             playlist_link = create_playlist(uris, given_date)
             if not current_user.is_authenticated:
                 session['playlists'] = {}
-                session['playlists'][given_date] = {'date': given_date, 'link': playlist_link}
+                session['playlists'][given_date] = {'original_date': given_date, 'date': generate_date(given_date),
+                                                    'link': playlist_link}
                 return redirect(url_for('index'))
             else:
                 return add_playlist(date=given_date, link=playlist_link)

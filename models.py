@@ -17,5 +17,6 @@ class Playlist(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     user = relationship("User", back_populates='playlists')
+    original_date = db.Column(db.String, nullable=False)
     date = db.Column(db.String, nullable=False)
     link = db.Column(db.String, nullable=False)
